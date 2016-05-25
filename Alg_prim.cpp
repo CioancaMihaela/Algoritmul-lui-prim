@@ -13,10 +13,11 @@ int a[9][9], min, i_min, j_min;
 int sters[9];
 int marcat[9];
 int v[];
-int *vect;
+int vect[10];
 int arbore[9][2];
 int count;
 int b[10][10];
+int res[10];
 LPCWSTR *result[10];
 
 
@@ -94,7 +95,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.hInstance		= hInstance;
 	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ALG_PRIM));
 	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = CreateSolidBrush(RGB(180, 180, 180));
+	wcex.hbrBackground = CreateSolidBrush(0x0099CC99);
 	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_ALG_PRIM);
 	wcex.lpszClassName	= szWindowClass;
 	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
@@ -112,6 +113,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
+
+
+
+
+//
+
+
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    HWND hWnd;
@@ -119,7 +128,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-      CW_USEDEFAULT, 0, 1000,600, NULL, NULL, hInstance, NULL);
+      CW_USEDEFAULT, 0, 850,600, NULL, NULL, hInstance, NULL);
 
    if (!hWnd)
    {
@@ -177,6 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
+	
 
 	switch (message)
 	{
@@ -187,12 +197,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 			600, 100, 200, 25, hWnd, (HMENU)IDC_HR1, GetModuleHandle(NULL), NULL);
-		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("   OK "),
-			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
-			680, 150, 50, 25, hWnd, (HMENU)IDC_BUT, GetModuleHandle(NULL), NULL);
+		
 		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("                       Alegeti   orasele"),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
-			300, 20, 300, 30, hWnd, (HMENU)IDC_HR4, GetModuleHandle(NULL), NULL);
+			300, 20, 300, 30, hWnd, (HMENU)IDC_HR40, GetModuleHandle(NULL), NULL);
 		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("Oradea"),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 			350, 100, 85, 25, hWnd, (HMENU)IDC_OR, GetModuleHandle(NULL), NULL);
@@ -220,12 +228,70 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("Galati"),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 			200, 150, 85, 25, hWnd, (HMENU)IDC_GL, GetModuleHandle(NULL), NULL);
+
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("     GATA"),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			660, 150, 85, 25, hWnd, (HMENU)IDC_HR3, GetModuleHandle(NULL), NULL);
+
+		
+
 		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
-			200,250, 600, 250, hWnd, (HMENU)IDC_HR2, GetModuleHandle(NULL), NULL);
-		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("GATA"),
+			50, 300, 100, 25, hWnd, (HMENU)IDC_HR2, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
-			660, 200, 85, 25, hWnd, (HMENU)IDC_HR3, GetModuleHandle(NULL), NULL);
+			300, 300, 100, 25, hWnd, (HMENU)IDC_HR4, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			550, 300, 100, 25, hWnd, (HMENU)IDC_HR5, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			200, 300, 50, 25, hWnd, (HMENU)IDC_HR12, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			450, 300, 50, 25, hWnd, (HMENU)IDC_HR13, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			700, 300, 50, 25, hWnd, (HMENU)IDC_HR14, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			50, 400, 100, 25, hWnd, (HMENU)IDC_HR6, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			300, 400, 100, 25, hWnd, (HMENU)IDC_HR7, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			550, 400, 100, 25, hWnd, (HMENU)IDC_HR8, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			200, 400, 50, 25, hWnd, (HMENU)IDC_HR15, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			450, 400, 50, 25, hWnd, (HMENU)IDC_HR16, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			700, 400, 50, 25, hWnd, (HMENU)IDC_HR17, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			50, 500, 100, 25, hWnd, (HMENU)IDC_HR9, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			300, 500, 100, 25, hWnd, (HMENU)IDC_HR10, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			550, 500, 100, 25, hWnd, (HMENU)IDC_HR11, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			200, 500, 50, 25, hWnd, (HMENU)IDC_HR18, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			450, 500, 50, 25, hWnd, (HMENU)IDC_HR19, GetModuleHandle(NULL), NULL);
+		CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
+			WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
+			700, 500, 50, 25, hWnd, (HMENU)IDC_HR20, GetModuleHandle(NULL), NULL);
+
+
+
 
 
 
@@ -242,12 +308,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 					SetDlgItemText(hWnd, IDC_HR1, TEXT("BUCURESTI"));
 					op = BUC;
+					//res[0] = 1;
 					break;
 	}
 	case IDC_OR:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("ORADEA"));
 				   op = OR;
+				   //res[6] = 1;
 				   break;
 
 
@@ -256,179 +324,197 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("CRAIOVA"));
 				   op = CR;
+				   //res[2]= 1;
 				   break;
 	}
 	case IDC_DR:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("DROBETA"));
 				   op = DR;
+				   //res[3] = 1;
 				   break;
 	}
 	case IDC_GL:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("GALATI"));
 				   op = GL;
+				   //res[4] = 1;
 				   break;
 	}
 	case IDC_CT:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("CONSTANTA"));
 				   op = CT;
+				   //res[1] = 1;
 				   break;
 	}
 	case IDC_IS:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("IASI"));
 				   op = IS;
+				   //res[5] = 1;
 				   break;
 	}
 	case IDC_SB:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("SIBIU"));
 				   op = SB;
+				   //res[7] = 1;
 				   break;
 	}
 	case IDC_TM:
 	{
 				   SetDlgItemText(hWnd, IDC_HR1, TEXT("TIMISOARA"));
 				   op = TM;
+				   //res[8] = 1;
 				   break;
 	}
+	
 
-
-	case IDC_BUT:
+		
+	case IDC_HR3:
 	{
 					
-					
+					char*q[9] = { "Bucuresti", "Constanta", "Craiova", "Drobeta", "Galati", "Iasi", "Oradea", "Sibiu", "Timisoara" };
+					int j = 0;
 					switch (op)
 					{
 					case BUC:
-						res[1] = 1;
+						res[0] = 1;
 						break;
 
 					case TM:
-						res[9] = 9;
+						res[8] = 1;
 						break;
 
 					case SB:
-						res[8] = 8;
+						res[7] = 1;
 						break;
 					case IS:
-						res[6] = 6;
+						res[5] = 1;
 						break;
 					case DR:
-						res[4] = 4;
+						res[3] = 1;
 						break;
 					case CR:
-						res[3] = 3;
+						res[2] = 1;
 						break;
 					case CT:
-						res[2] = 2;
+						res[1] = 1;
 						break;
 					case GL:
-						res[5] = 5;
+						res[4] = 1;
 						break;
 					case OR:
-						res[7] = 7;
+						res[5] = 1;
 						break;
 
 					}
-					
-
-	}
-	case IDC_HR3:
-	{
-	/*char*q[9] = { "Bucuresti", "Constanta", "Craiova", "Drobeta", "Galati", "Iasi", "Oradea", "Sibiu", "Timisoara" };
-	int j = 0;
-	for (int i = 1; i <= 9; i++)
-	{
-		if (res[i] != 0)
-		{
-			n++;
-			
-			vect[j] = i;
-			j++;
-		}
-	}
-
-	FILE*f;
-
-	
-	
-	min = MINIM;
-	f = fopen("matrice.txt", "r");
-	for (int i = 0; i < 9; i++)
-	{
-		for (int k = 0; k < 9; k++)
-		{
-			fscanf(f, "%d", &a[i][k]);
-		}
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			b[i][j] = a[vect[i]][vect[j]];
-		}
-	}
-
-
-
-	for (int i = 0; i < 9; i++)
-	{
-		marcat[i] = 0;
-		sters[i] = 0;
-	}
-
-
-	sters[0] = 1;
-	marcat[0] = 1;
-	for (int i = 1; i < n; i++)
-	{
-		if (b[0][i] < min)
-		{
-			min = b[0][i];
-			arbore[count][0] = 0;
-			arbore[count][1] = i;
-		}
-
-	}
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (marcat[i] != 1)
-			{
-
-				i_min = i;
-				j_min = j;
-				alege(&min, &i_min, &j_min);
-				marcat[i_min] = 1;
-				sters[j_min] = 1;
-				count++;
-				arbore[count][0] = i_min;
-				arbore[count][1] = j_min;
-			}
-		}
-	}
-
-
-	for (int i = 0; i < n - 1; i++)
-	{
-		printf("%d,%d cu costul %d \n", arbore[i][0], arbore[i][1], b[arbore[i][0]][arbore[i][1]]);
-		SetDlgItemText(hWnd, IDC_HR2, convertCharArrayToLPCWSTR( q[arbore[i][0]]));
-		SetDlgItemInt(hWnd, IDC_HR2, b[arbore[i][0]][arbore[i][1]], true);
-		SetDlgItemText(hWnd, IDC_HR2, convertCharArrayToLPCWSTR( q[arbore[i][1]]));
-		
-	}
-	*/
 					for (int i = 0; i < 9; i++)
 					{
-						if (res[i] != 0)
-							SetDlgItemInt(hWnd, IDC_HR2, res[i], true);
+						if (res[i] ==1)
+						{
+							n++;
+
+							vect[j] = i;
+							j++;
+						}
 					}
+					int aux;
+					for (int i = 0; i < n;i++)
+					for (int j = i + 1; j < n; j++)
+					{
+						if (vect[j] < vect[i])
+						{
+							aux = vect[i];
+							vect[i] = vect[j];
+							vect[j] = aux;
+							
+						}
+					}
+					FILE*f;
+
+
+
+					min = MINIM;
+					f = fopen("matrice.txt", "r");
+					for (int i = 0; i < 9; i++)
+					{
+						for (int k = 0; k < 9; k++)
+						{
+							fscanf(f, "%d", &a[i][k]);
+						}
+					}
+
+					for (int i = 0; i < n; i++)
+					{
+						for (int j = 0; j < n; j++)
+						{
+							b[i][j] = a[vect[i]][vect[j]];
+						}
+					}
+
+
+
+					for (int i = 0; i < 9; i++)
+					{
+						marcat[i] = 0;
+						sters[i] = 0;
+					}
+
+
+
+					for (int i = 0; i < n; i++)
+					{
+						for (int j = 0; j < n; j++)
+						{
+							if (marcat[i] != 1)
+							{
+
+								i_min = i;
+								j_min = j;
+								alege(&min, &i_min, &j_min);
+								marcat[i_min] = 1;
+								sters[j_min] = 1;
+								
+								arbore[count][0] = i_min;
+								arbore[count][1] = j_min;
+								count++;
+							}
+						}
+					}
+					
+							SetDlgItemText(hWnd, IDC_HR2, convertCharArrayToLPCWSTR(q[vect[arbore[0][0]]] - 1));
+							if (arbore[1][0]!=0)
+							SetDlgItemText(hWnd, IDC_HR4, convertCharArrayToLPCWSTR(q[vect[arbore[1][0]]] - 1));
+							if (arbore[2][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR5, convertCharArrayToLPCWSTR(q[vect[arbore[2][0]]] - 1));
+							if (arbore[3][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR6, convertCharArrayToLPCWSTR(q[vect[arbore[3][0]]] - 1));
+							if (arbore[4][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR7, convertCharArrayToLPCWSTR(q[vect[arbore[4][0]]] - 1));
+							if (arbore[5][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR8, convertCharArrayToLPCWSTR(q[vect[arbore[5][0]]] - 1));
+							if (arbore[6][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR9, convertCharArrayToLPCWSTR(q[vect[arbore[6][0]]] - 1));
+							if (arbore[7][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR10, convertCharArrayToLPCWSTR(q[vect[arbore[7][0]]] - 1));
+							if (arbore[8][0] != 0)
+							SetDlgItemText(hWnd, IDC_HR11, convertCharArrayToLPCWSTR(q[vect[arbore[8][0]]] - 1));
+							SetDlgItemInt(hWnd, IDC_HR12, n, true);
+							SetDlgItemInt(hWnd, IDC_HR13, a[vect[1]][vect[2]], true);
+							SetDlgItemInt(hWnd, IDC_HR14, a[vect[2]][vect[3]], true);
+							SetDlgItemInt(hWnd, IDC_HR15, a[vect[3]][vect[4]], true);
+							SetDlgItemInt(hWnd, IDC_HR16, a[vect[4]][vect[5]], true);
+							SetDlgItemInt(hWnd, IDC_HR17, a[vect[5]][vect[6]], true);
+							SetDlgItemInt(hWnd, IDC_HR18, a[vect[6]][vect[7]], true);
+							SetDlgItemInt(hWnd, IDC_HR19, a[vect[7]][vect[8]], true);
+							SetDlgItemInt(hWnd, IDC_HR20, a[vect[8]][vect[9]], true);
+					
+
+
+
+
 					break;
 	}
 	case IDM_ABOUT:
@@ -442,116 +528,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		break;
 	}
-case WM_PAINT:
+
+
+
+	case WM_PAINT:
 	{hdc = BeginPaint(hWnd, &ps);
 	// TODO: Add any drawing code here...
 	HPEN hpenOld = static_cast<HPEN>(SelectObject(hdc, GetStockObject(DC_PEN)));
 	HBRUSH hbrushOld = static_cast<HBRUSH>(SelectObject(hdc, GetStockObject(NULL_BRUSH)));
-
-	/*// Calculate the dimensions of the 4 equal rectangles.
-	RECT rcWindow;
-	GetClientRect(hWnd, &rcWindow);
-
-	RECT rc1, rc2, rc3, rc4, rc5, rc6, rc7, rc8, rc9;
-	rc1 = rc2 = rc3 = rc4 = rc5 = rc6 = rc7 = rc8 = rc9 = rcWindow;
-
-	rc1.right = (rcWindow.right - rcWindow.left) / 3;
-	rc1.bottom = (rcWindow.bottom - rcWindow.top) / 3;
-
-	rc2.left = rc1.right;
-	rc2.right = (rcWindow.right - rcWindow.left) / 1.5;
-	rc2.bottom = rc1.bottom;
-
-	rc3.left = rc2.right;
-	rc3.bottom = rc1.bottom;
-
-	rc4.top = rc1.bottom;
-	rc4.right = rc1.right;
-	rc4.bottom = (rcWindow.bottom - rcWindow.top) / 1.5;
-	rc4.left = rc1.left;
-
-	rc5.top = rc1.bottom;
-	rc5.left = rc4.right;
-	rc5.right = rc2.right;
-	rc5.bottom = rc4.bottom;
-
-	rc6.top = rc1.bottom;
-	rc6.right = rc3.right;
-	rc6.bottom = rc4.bottom;
-	rc6.left = rc5.right;
-
-	rc7.top = rc4.bottom;
-	rc7.right = rc4.right;
-	rc7.bottom = (rcWindow.bottom - rcWindow.top);
-	rc7.left = rc1.left;
-
-	rc8.top = rc4.bottom;
-	rc8.bottom = rc7.bottom;
-	rc8.right = rc5.right;
-	rc8.left = rc7.right;
-
-	rc9.top = rc4.bottom;
-	rc9.bottom = rc7.bottom;
-	rc9.right = rc6.right;
-	rc9.left = rc8.right;
-
-	// Optionally, deflate each of the rectangles by an arbitrary amount so that
-	// they don't butt up right next to each other and we can distinguish them.
-	InflateRect(&rc1, -5, -5);
-	InflateRect(&rc2, -5, -5);
-	InflateRect(&rc3, -5, -5);
-	InflateRect(&rc4, -5, -5);
-	InflateRect(&rc5, -5, -5);
-	InflateRect(&rc6, -5, -5);
-	InflateRect(&rc7, -5, -5);
-	InflateRect(&rc8, -5, -5);
-	InflateRect(&rc9, -5, -5);
-
-
-	// Draw (differently-colored) borders around these rectangles.
-	SetDCPenColor(hdc, RGB(255, 0, 0));    // red
-	Rectangle(hdc, rc1.left, rc1.top, rc1.right, rc1.bottom);
-	SetDCPenColor(hdc, RGB(0, 255, 0));    // green
-	Rectangle(hdc, rc2.left, rc2.top, rc2.right, rc2.bottom);
-	SetDCPenColor(hdc, RGB(0, 0, 255));    // blue
-	Rectangle(hdc, rc3.left, rc3.top, rc3.right, rc3.bottom);
-	SetDCPenColor(hdc, RGB(255, 0, 0));
-	Rectangle(hdc, rc4.left, rc4.top, rc4.right, rc4.bottom);
-	SetDCPenColor(hdc, RGB(0, 255, 0));
-	Rectangle(hdc, rc5.left, rc5.top, rc5.right, rc5.bottom);
-	SetDCPenColor(hdc, RGB(0, 0, 255));
-	Rectangle(hdc, rc6.left, rc6.top, rc6.right, rc6.bottom);
-	SetDCPenColor(hdc, RGB(255, 0, 0));
-	Rectangle(hdc, rc7.left, rc7.top, rc7.right, rc7.bottom);
-	SetDCPenColor(hdc, RGB(0, 255, 0));
-	Rectangle(hdc, rc8.left, rc8.top, rc8.right, rc8.bottom);
-	SetDCPenColor(hdc, RGB(0, 0, 255));
-	Rectangle(hdc, rc9.left, rc9.top, rc9.right, rc9.bottom);
-
-	// Draw the text into the center of each of the rectangles.
-	SetBkMode(hdc, TRANSPARENT);
-	SetBkColor(hdc, RGB(0, 0, 0));   // black
-	// TODO: Optionally, set a nicer font than the default.
-	DrawText(hdc, TEXT("Oradea"), -1, &rc1, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-
-	DrawText(hdc, TEXT("Iasi"), -1, &rc2, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Timisoara"), -1, &rc3, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Sibiu"), -1, &rc4, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Galati"), -1, &rc5, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Drobeta"), -1, &rc6, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Craiova"), -1, &rc7, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Bucuresti"), -1, &rc8, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	DrawText(hdc, TEXT("Constanta"), -1, &rc9, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-	*/
+	
+	
 	// Clean up after ourselves.
 	SelectObject(hdc, hpenOld);
 	SelectObject(hdc, hbrushOld);
 
 	EndPaint(hWnd, &ps);
 	break; }
-	
+
 	case WM_DESTROY:
-	PostQuitMessage(0);
+		PostQuitMessage(0);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -559,7 +554,6 @@ case WM_PAINT:
 		return 0;
 	}
 }
-
 // Message handler for about box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
