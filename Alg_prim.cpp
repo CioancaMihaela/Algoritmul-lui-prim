@@ -7,19 +7,28 @@
 #define MINIM 10000
 
 int n;
-int a[9][9], min, i_min, j_min;
+int a[9][9] = { { 0 ,226, 230, 340, 239, 388 ,597, 277, 544 },
+{ 226, 0, 463, 572, 231, 451, 827 ,507 ,778 },
+{ 230 ,463, 0 ,112, 477, 622 ,486 ,222 ,339 },
+{ 340 ,572 ,112 ,0 ,595 ,733 ,372 ,320 ,227 },
+{ 239 ,231 ,477, 595, 0 ,220 ,661, 408, 677 },
+{ 388 ,451 ,622 ,733 ,220, 0 ,547 ,413 ,634 },
+{ 597, 827 ,486, 372, 661 ,547 ,0, 317 ,169 },
+{ 277 ,507 ,222 ,320 ,408 ,413 ,317 ,0 ,265 },
+{ 544, 778, 339, 227, 677 ,634, 169 ,265, 0 },
+};
+int min, i_min, j_min;
 int sters[9];
 int marcat[9];
 int v[];
-int vect[50];
+int vect[9];
 int arbore[9][2];
 int count;
 int b[10][10];
 int res[10];
 LPCWSTR *result[10];
 HWND IDC_HR40, IDC_BUC, IDC_OR, IDC_CR, IDC_DR, IDC_GL, IDC_IS, IDC_HR3, IDC_SB, IDC_CT, IDC_TM;
-HWND IDC_HR1, IDC_HR2, IDC_HR5, IDC_HR4, IDC_HR6, IDC_HR7, IDC_HR8, IDC_HR9, IDC_HR10, IDC_HR11;
-HWND IDC_HR12, IDC_HR13, IDC_HR14, IDC_HR15, IDC_HR16, IDC_HR17, IDC_HR18, IDC_HR19, IDC_HR20;
+
 HWND IDC_BUT;
 
 enum operation { BUC,CT,OR, IS, GL, DR, CR, TM,SB};
@@ -165,7 +174,6 @@ void alege(int *min, int*i_min, int*j_min)
 		}
 	}
 }
-
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -201,34 +209,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					  CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 						  WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 						  600, 100, 200, 25, hWnd, (HMENU)IDC_HR1, GetModuleHandle(NULL), NULL);
-
-					  IDC_HR40 = CreateWindowEx(NULL, L"BUTTON", L"Alegeti orasele", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  300, 20, 300, 30, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_OR = CreateWindowEx(NULL, L"BUTTON", L"Oradea", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  350, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_TM = CreateWindowEx(NULL, L"BUTTON", L"Timisoara", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  350, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_DR = CreateWindowEx(NULL, L"BUTTON", L"Drobeta", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  200, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_CR = CreateWindowEx(NULL, L"BUTTON", L"Craiova", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  50, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_BUC = CreateWindowEx(NULL, L"BUTTON", L"Bucuresti", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  50, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_SB = CreateWindowEx(NULL, L"BUTTON", L"Sibiu", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  350, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_IS = CreateWindowEx(NULL, L"BUTTON", L"Iasi", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  200, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_CT = CreateWindowEx(NULL, L"BUTTON", L"Constanta", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  50, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_GL = CreateWindowEx(NULL, L"BUTTON", L"Galati", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  200, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-					  IDC_HR3 = CreateWindowEx(NULL, L"BUTTON", L"Gata", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-						  660, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-
-
-
-
-
 					  CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 						  WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 						  50, 300, 100, 25, hWnd, (HMENU)IDC_HR2, GetModuleHandle(NULL), NULL);
@@ -283,6 +263,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					  CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(" "),
 						  WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | WS_TABSTOP,
 						  700, 500, 50, 25, hWnd, (HMENU)IDC_HR20, GetModuleHandle(NULL), NULL);
+
+					  IDC_HR40 = CreateWindowEx(NULL, L"BUTTON", L"Alegeti orasele", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  300, 20, 300, 30, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_OR = CreateWindowEx(NULL, L"BUTTON", L"Oradea", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  350, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_TM = CreateWindowEx(NULL, L"BUTTON", L"Timisoara", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  350, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_DR = CreateWindowEx(NULL, L"BUTTON", L"Drobeta", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  200, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_CR = CreateWindowEx(NULL, L"BUTTON", L"Craiova", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  50, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_BUC = CreateWindowEx(NULL, L"BUTTON", L"Bucuresti", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  50, 100, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_SB = CreateWindowEx(NULL, L"BUTTON", L"Sibiu", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  350, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_IS = CreateWindowEx(NULL, L"BUTTON", L"Iasi", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  200, 200, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_CT = CreateWindowEx(NULL, L"BUTTON", L"Constanta", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  50, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_GL = CreateWindowEx(NULL, L"BUTTON", L"Galati", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  200, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+					  IDC_HR3 = CreateWindowEx(NULL, L"BUTTON", L"Gata", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+						  660, 150, 85, 25, hWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+
+
+					
+
+					  
 					  break;
 	}
 
@@ -351,13 +359,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 										  if ((HWND)lParam == IDC_HR3)
 										  {
 											  char*q[9] = { "Bucuresti", "Constanta", "Craiova", "Drobeta", "Galati", "Iasi", "Oradea", "Sibiu", "Timisoara" };
-
-
-
-											 /* int it = 0;
+											int it = 0;
 											  for (int i = 0; i < 9; i++)
 											  {
-												  if (res[i] >0)
+												  if (res[i] ==1)
 												  {
 													  n++;
 
@@ -378,23 +383,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 													  }
 												  }
-											  }*/ 
-
-
-											  FILE*f;
-
-											  int vect[9] = { 1,2,3,0,0,0,0,0,0 };
-
-											  min = MINIM;
-											  f = fopen("matrice.txt", "r");
-											  for (int i = 0; i < 9; i++)
-											  {
-												  for (int k = 0; k < 9; k++)
-												  {
-													  fscanf(f, "%d", &a[i][k]);
-												  }
 											  }
-
 											  for (int i = 0; i < n; i++)
 											  {
 												  for (int j = 0; j < n; j++)
@@ -402,61 +391,79 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 													  b[i][j] = a[vect[i]][vect[j]];
 												  }
 											  }
-
-
-
 											  for (int i = 0; i < 9; i++)
 											  {
 												  marcat[i] = 0;
 												  sters[i] = 0;
 											  }
-
-
-
-											  for (int i = 0; i < n; i++)
+											  for (int lin =0; lin < n; lin++)
 											  {
-												  for (int j = 0; j < n; j++)
+												  for (int col = 0; col < n; col++)
 												  {
-													  if (sters[j] != 1 && marcat[i] != 1)
+													  if (sters[col] ==0 && marcat[lin] != 1)
 													  {
 
-														  i_min = i;
-														  j_min = j;
+														  i_min = lin;
+														  j_min = col;
 														  alege(&min, &i_min, &j_min);
-
 														  arbore[count][0] = i_min;
 														  arbore[count][1] = j_min;
 														  count++;
 													  }
 												  }
 											  }
+											  int contor = 0;
+											
+
+											 SetDlgItemText(hWnd, IDC_HR2,  convertCharArrayToLPCWSTR(q[vect[arbore[0][0]]] - 1));
+											 if (vect[arbore[1][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR4, convertCharArrayToLPCWSTR(q[vect[arbore[1][0]]] - 1));
+											 if (vect[arbore[2][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR5, convertCharArrayToLPCWSTR(q[vect[arbore[2][0]]] - 1));
+											 if (vect[arbore[3][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR6, convertCharArrayToLPCWSTR(q[vect[arbore[3][0]]] - 1));
+											 if (vect[arbore[4][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR7, convertCharArrayToLPCWSTR(q[vect[arbore[4][0]]] - 1));
+											 if (vect[arbore[5][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR8, convertCharArrayToLPCWSTR(q[vect[arbore[5][0]]] - 1));
+											 if (vect[arbore[6][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR9, convertCharArrayToLPCWSTR(q[vect[arbore[6][0]]] - 1));
+											 if (vect[arbore[7][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR10, convertCharArrayToLPCWSTR(q[vect[arbore[7][0]]] - 1));
+											 if (vect[arbore[8][0]] != vect[arbore[0][0]])
+											  SetDlgItemText(hWnd, IDC_HR11, convertCharArrayToLPCWSTR(q[vect[arbore[8][0]]] - 1));
+											 contor++;
+											 if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR12, a[vect[0]][vect[1]], true);
+											  if (a[vect[1]][vect[2]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR13, a[vect[1]][vect[2]], true);
+											  if (a[vect[2]][vect[3]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR14, a[vect[2]][vect[3]], true);
+											  if (a[vect[3]][vect[4]])
+												  contor++;
+											  if (contor<n)
+											 SetDlgItemInt(hWnd, IDC_HR15, a[vect[3]][vect[4]], true);
+											  if (a[vect[4]][vect[5]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR16, a[vect[4]][vect[5]], true);
+											  if (a[vect[5]][vect[6]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR17, a[vect[5]][vect[6]], true);
+											  if (a[vect[6]][vect[7]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR18, a[vect[6]][vect[7]], true);
+											  if (a[vect[7]][vect[8]])
+												  contor++;
+											  if (contor<n)
+											  SetDlgItemInt(hWnd, IDC_HR19, a[vect[7]][vect[8]], true);
 											 
-											  SetDlgItemText(hWnd,int(IDC_HR2), TEXT("Aa"));
-
-											  SetDlgItemText(hWnd, int(IDC_HR4),  convertCharArrayToLPCWSTR(q[vect[arbore[1][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR5),  convertCharArrayToLPCWSTR(q[vect[arbore[2][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR6), convertCharArrayToLPCWSTR(q[vect[arbore[3][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR7), convertCharArrayToLPCWSTR(q[vect[arbore[4][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR8), convertCharArrayToLPCWSTR(q[vect[arbore[5][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR9), convertCharArrayToLPCWSTR(q[vect[arbore[6][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR10), convertCharArrayToLPCWSTR(q[vect[arbore[7][0]]] - 1));
-
-											  SetDlgItemText(hWnd, int(IDC_HR11), convertCharArrayToLPCWSTR(q[vect[arbore[8][0]]] - 1));
-											  SetDlgItemInt(hWnd, int(IDC_HR12), vect[1], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR13), res[7], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR14), vect[arbore[0][0]], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR15), a[vect[3]][vect[4]], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR16), a[vect[4]][vect[5]], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR17), a[vect[5]][vect[6]], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR18), a[vect[6]][vect[7]], true);
-											  SetDlgItemInt(hWnd, int(IDC_HR19), a[vect[7]][vect[8]], true);
-											  //SetDlgItemInt(hWnd, int(IDC_HR20), a[vect[8]][vect[9]], true);
 
 
 											  break;
